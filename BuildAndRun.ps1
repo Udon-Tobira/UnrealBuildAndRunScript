@@ -5,7 +5,7 @@ Param(
     [ValidateSet('Win64')]
     [string]$Platform = 'Win64',
 
-    [string]$UEVersion = '5.6'
+    [string]$UEVersion
 )
 
 $ErrorActionPreference = 'Stop'
@@ -48,6 +48,10 @@ try {
 
     $projectName = $uproject.BaseName
     $uprojectPath = $uproject.FullName
+
+	# .uproject の EngineAssociation から UE バージョンを取得（フォールバック無し）
+	$uprojectJson = Get-Content -LiteralPath $uprojectPath -Raw | ConvertFrom-Json
+	$UEVersion = $uprojectJson.EngineAssociation
 
     # エンジンルート（別スクリプトで解決、見つからなければエラー）
     $resolveScript = Join-Path $PSScriptRoot 'Get-UEInstallPath.ps1'
