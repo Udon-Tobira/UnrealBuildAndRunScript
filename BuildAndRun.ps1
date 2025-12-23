@@ -1,5 +1,5 @@
 ﻿Param(
-    [ValidateSet('DebugGame','Development','Shipping')]
+    [ValidateSet('DebugGame', 'Development', 'Shipping')]
     [string]$Configuration = 'Development',
 
     [ValidateSet('Win64')]
@@ -42,16 +42,17 @@ try {
             throw "複数の .uproject が見つかりました。対象を特定できませんでした: " + ($uprojectFiles | ForEach-Object { $_.FullName } | Out-String)
         }
         $uproject = $preferred
-    } else {
+    }
+    else {
         $uproject = $uprojectFiles[0]
     }
 
     $projectName = $uproject.BaseName
     $uprojectPath = $uproject.FullName
 
-	# .uproject の EngineAssociation から UE バージョンを取得（フォールバック無し）
-	$uprojectJson = Get-Content -LiteralPath $uprojectPath -Raw | ConvertFrom-Json
-	$UEVersion = $uprojectJson.EngineAssociation
+    # .uproject の EngineAssociation から UE バージョンを取得（フォールバック無し）
+    $uprojectJson = Get-Content -LiteralPath $uprojectPath -Raw | ConvertFrom-Json
+    $UEVersion = $uprojectJson.EngineAssociation
 
     # エンジンルート（別スクリプトで解決、見つからなければエラー）
     $resolveScript = Join-Path $PSScriptRoot 'Get-UEInstallPath.ps1'

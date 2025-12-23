@@ -26,12 +26,14 @@ try {
                 Write-Output $json.InstallLocation
                 return
             }
-        } catch {
+        }
+        catch {
             Write-Warn "マニフェストの解析に失敗: $($file.Name) - $($_.Exception.Message)"
         }
     }
 
     throw ("マニフェストから UE_{0} のインストール先が見つかりませんでした。" -f $Version)
-} catch {
+}
+catch {
     throw ("マニフェスト走査で例外: {0}" -f $_.Exception.Message)
 }
