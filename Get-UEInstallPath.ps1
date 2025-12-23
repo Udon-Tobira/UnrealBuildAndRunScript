@@ -1,4 +1,4 @@
-Param(
+ï»¿Param(
     [Parameter(Mandatory = $true)]
     [string]$Version
 )
@@ -15,7 +15,7 @@ try {
     $manifestPath = 'C:\ProgramData\Epic\EpicGamesLauncher\Data\Manifests'
 
     if (-not (Test-Path -LiteralPath $manifestPath)) {
-        throw "ƒ}ƒjƒtƒFƒXƒgƒfƒBƒŒƒNƒgƒŠ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: $manifestPath"
+        throw "ãƒãƒ‹ãƒ•ã‚§ã‚¹ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: $manifestPath"
     }
 
     $itemFiles = Get-ChildItem -Path $manifestPath -Filter *.item -File -ErrorAction Stop
@@ -27,11 +27,11 @@ try {
                 return
             }
         } catch {
-            Write-Warn "ƒ}ƒjƒtƒFƒXƒg‚Ì‰ğÍ‚É¸”s: $($file.Name) - $($_.Exception.Message)"
+            Write-Warn "ãƒãƒ‹ãƒ•ã‚§ã‚¹ãƒˆã®è§£æã«å¤±æ•—: $($file.Name) - $($_.Exception.Message)"
         }
     }
 
-    throw ("ƒ}ƒjƒtƒFƒXƒg‚©‚ç UE_{0} ‚ÌƒCƒ“ƒXƒg[ƒ‹æ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B" -f $Version)
+    throw ("ãƒãƒ‹ãƒ•ã‚§ã‚¹ãƒˆã‹ã‚‰ UE_{0} ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«å…ˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚" -f $Version)
 } catch {
-    throw ("ƒ}ƒjƒtƒFƒXƒg‘–¸‚Å—áŠO: {0}" -f $_.Exception.Message)
+    throw ("ãƒãƒ‹ãƒ•ã‚§ã‚¹ãƒˆèµ°æŸ»ã§ä¾‹å¤–: {0}" -f $_.Exception.Message)
 }

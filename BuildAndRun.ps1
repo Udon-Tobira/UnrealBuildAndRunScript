@@ -1,4 +1,4 @@
-Param(
+ï»¿Param(
     [ValidateSet('DebugGame','Development','Shipping')]
     [string]$Configuration = 'Development',
 
@@ -26,20 +26,20 @@ function Write-Err {
 }
 
 try {
-    # ƒvƒƒWƒFƒNƒgƒ‹[ƒg‚Æ .uproject ŒŸo
+    # ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒ«ãƒ¼ãƒˆã¨ .uproject æ¤œå‡º
     $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
     $uprojectFiles = Get-ChildItem -Path $projectRoot -Filter *.uproject -File -ErrorAction Stop
 
     if ($uprojectFiles.Count -eq 0) {
-        throw ".uproject ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½: $projectRoot"
+        throw ".uproject ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ: $projectRoot"
     }
 
     if ($uprojectFiles.Count -gt 1) {
-        # ƒfƒBƒŒƒNƒgƒŠ–¼‚Æˆê’v‚·‚é .uproject ‚ğ—Dæ
+        # ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã¨ä¸€è‡´ã™ã‚‹ .uproject ã‚’å„ªå…ˆ
         $dirName = Split-Path -Leaf $projectRoot
         $preferred = $uprojectFiles | Where-Object { $_.BaseName -ieq $dirName } | Select-Object -First 1
         if ($null -eq $preferred) {
-            throw "•¡”‚Ì .uproject ‚ªŒ©‚Â‚©‚è‚Ü‚µ‚½B‘ÎÛ‚ğ“Á’è‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½: " + ($uprojectFiles | ForEach-Object { $_.FullName } | Out-String)
+            throw "è¤‡æ•°ã® .uproject ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸã€‚å¯¾è±¡ã‚’ç‰¹å®šã§ãã¾ã›ã‚“ã§ã—ãŸ: " + ($uprojectFiles | ForEach-Object { $_.FullName } | Out-String)
         }
         $uproject = $preferred
     } else {
@@ -49,30 +49,30 @@ try {
     $projectName = $uproject.BaseName
     $uprojectPath = $uproject.FullName
 
-	# .uproject ‚Ì EngineAssociation ‚©‚ç UE ƒo[ƒWƒ‡ƒ“‚ğæ“¾iƒtƒH[ƒ‹ƒoƒbƒN–³‚µj
+	# .uproject ã® EngineAssociation ã‹ã‚‰ UE ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’å–å¾—ï¼ˆãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ç„¡ã—ï¼‰
 	$uprojectJson = Get-Content -LiteralPath $uprojectPath -Raw | ConvertFrom-Json
 	$UEVersion = $uprojectJson.EngineAssociation
 
-    # ƒGƒ“ƒWƒ“ƒ‹[ƒgi•ÊƒXƒNƒŠƒvƒg‚Å‰ğŒˆAŒ©‚Â‚©‚ç‚È‚¯‚ê‚ÎƒGƒ‰[j
+    # ã‚¨ãƒ³ã‚¸ãƒ³ãƒ«ãƒ¼ãƒˆï¼ˆåˆ¥ã‚¹ã‚¯ãƒªãƒ—ãƒˆã§è§£æ±ºã€è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ã‚¨ãƒ©ãƒ¼ï¼‰
     $resolveScript = Join-Path $PSScriptRoot 'Get-UEInstallPath.ps1'
     if (-not (Test-Path -LiteralPath $resolveScript)) {
-        throw "Get-UEInstallPath.ps1 ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñBƒGƒ“ƒWƒ“ƒpƒX‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñB"
+        throw "Get-UEInstallPath.ps1 ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚ã‚¨ãƒ³ã‚¸ãƒ³ãƒ‘ã‚¹ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã€‚"
     }
     $resolvedEngineRoot = & $resolveScript -Version $UEVersion
     if (-not $resolvedEngineRoot) {
-        throw ("ƒ}ƒjƒtƒFƒXƒg‚©‚ç UE_{0} ‚ÌƒCƒ“ƒXƒg[ƒ‹æ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B" -f $UEVersion)
+        throw ("ãƒãƒ‹ãƒ•ã‚§ã‚¹ãƒˆã‹ã‚‰ UE_{0} ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«å…ˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚" -f $UEVersion)
     }
     if (-not (Test-Path $resolvedEngineRoot)) {
-        throw ("Unreal Engine {0} ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ª‘¶İ‚µ‚Ü‚¹‚ñ: {1}" -f $UEVersion, $resolvedEngineRoot)
+        throw ("Unreal Engine {0} ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¾ã›ã‚“: {1}" -f $UEVersion, $resolvedEngineRoot)
     }
 
     $buildBat = Join-Path $resolvedEngineRoot 'Engine\\Build\\BatchFiles\\Build.bat'
     $editorExe = Join-Path $resolvedEngineRoot 'Engine\\Binaries\\Win64\\UnrealEditor.exe'
 
-    if (-not (Test-Path $buildBat)) { throw "Build.bat ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: $buildBat" }
-    if (-not (Test-Path $editorExe)) { throw "UnrealEditor.exe ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: $editorExe" }
+    if (-not (Test-Path $buildBat)) { throw "Build.bat ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: $buildBat" }
+    if (-not (Test-Path $editorExe)) { throw "UnrealEditor.exe ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: $editorExe" }
 
-    # ƒrƒ‹ƒhiEditor ƒ^[ƒQƒbƒgj
+    # ãƒ“ãƒ«ãƒ‰ï¼ˆEditor ã‚¿ãƒ¼ã‚²ãƒƒãƒˆï¼‰
     $editorTarget = "${projectName}Editor"
     $buildArgs = @(
         $editorTarget,
@@ -84,7 +84,7 @@ try {
         '-NoHotReload'
     ) -join ' '
 
-    Write-Info "ƒrƒ‹ƒhŠJn: $editorTarget $Platform $Configuration"
+    Write-Info "ãƒ“ãƒ«ãƒ‰é–‹å§‹: $editorTarget $Platform $Configuration"
     Write-Info "Engine: $resolvedEngineRoot"
     Write-Info "Project: $uprojectPath"
 
@@ -92,11 +92,11 @@ try {
     $exitCode = $buildProc.ExitCode
 
     if ($exitCode -ne 0) {
-        Write-Err "ƒrƒ‹ƒh‚É¸”s‚µ‚Ü‚µ‚½BExitCode=$exitCode"
+        Write-Err "ãƒ“ãƒ«ãƒ‰ã«å¤±æ•—ã—ã¾ã—ãŸã€‚ExitCode=$exitCode"
         exit $exitCode
     }
 
-    Write-Info 'ƒrƒ‹ƒh¬Œ÷BUnreal Editor ‚ğ‹N“®‚µ‚Ü‚·B'
+    Write-Info 'ãƒ“ãƒ«ãƒ‰æˆåŠŸã€‚Unreal Editor ã‚’èµ·å‹•ã—ã¾ã™ã€‚'
     $editorArgs = '"' + $uprojectPath + '"'
     Start-Process -FilePath $editorExe -ArgumentList $editorArgs | Out-Null
 }
@@ -104,4 +104,3 @@ catch {
     Write-Err $_.Exception.Message
     exit 1
 }
-
