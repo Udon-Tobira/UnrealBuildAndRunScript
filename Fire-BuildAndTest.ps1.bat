@@ -8,7 +8,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%PS1%" %*
 
 if errorlevel 1 (
     echo [ERROR] BuildAndTest failed. ExitCode=%ERRORLEVEL%
-    echo See the error output above. Press any key to exit...
+    echo See the error output above.
+    echo Press any key to exit...
     pause >nul
     exit /b %ERRORLEVEL%
 )
