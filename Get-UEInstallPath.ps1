@@ -15,7 +15,7 @@ try {
     $manifestPath = 'C:\ProgramData\Epic\EpicGamesLauncher\Data\Manifests'
 
     if (-not (Test-Path -LiteralPath $manifestPath)) {
-        throw "マニフェストディレクトリが見つかりません: $manifestPath"
+        throw "Manifest directory not found: $manifestPath"
     }
 
     $itemFiles = Get-ChildItem -Path $manifestPath -Filter *.item -File -ErrorAction Stop
@@ -28,12 +28,12 @@ try {
             }
         }
         catch {
-            Write-Warn "マニフェストの解析に失敗: $($file.Name) - $($_.Exception.Message)"
+            Write-Warn "Failed to parse manifest: $($file.Name) - $($_.Exception.Message)"
         }
     }
 
-    throw ("マニフェストから UE_{0} のインストール先が見つかりませんでした。" -f $Version)
+    throw ("UE_{0} install path not found in manifest." -f $Version)
 }
 catch {
-    throw ("マニフェスト走査で例外: {0}" -f $_.Exception.Message)
+    throw ("Exception while scanning manifests: {0}" -f $_.Exception.Message)
 }

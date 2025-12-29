@@ -32,12 +32,7 @@ try {
         exit $buildResult.ExitCode
     }
 
-    $editorExe = Join-Path $buildResult.EngineRoot 'Engine\\Binaries\\Win64\\UnrealEditor.exe'
-    Assert-PathExists -Path $editorExe -Description 'UnrealEditor.exe'
-
-    Write-Info 'Build succeeded. Launching Unreal Editor.'
-    $editorArgs = '"' + $buildResult.UProjectPath + '"'
-    Start-Process -FilePath $editorExe -ArgumentList $editorArgs | Out-Null
+    Write-Info 'Build succeeded.'
 }
 catch {
     Write-Err $_.Exception.Message
